@@ -1,0 +1,14 @@
+# idea
+.idea
+*.iml
+
+# building
+target
+build
+build.log
+logs
+
+resources/
+
+.DS_Store
+
