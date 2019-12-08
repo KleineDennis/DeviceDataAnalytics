@@ -16,13 +16,13 @@ class Splitter (override val uid: String) extends Transformer with DefaultParams
    *
    * @group param
    */
-  final val statement: Param[String] = new Param[String](this, "types", "HCA Message Types")
+  final val statement: Param[Seq[String]] = new Param[Seq[String]](this, "types", "HCA Message Types")
 
   /** @group setParam */
-  def setMessageType(value: String): this.type = set(statement, value)
+  def setMessageTypes(value: Seq[String]): this.type = set(statement, value)
 
   /** @group getParam */
-  def getMessageType: String = $(statement)
+  def getMessageTypes: Seq[String] = $(statement)
 
   override def transform(dataset: Dataset[_]): DataFrame = {
     transformSchema(dataset.schema, logging = true)
@@ -31,7 +31,7 @@ class Splitter (override val uid: String) extends Transformer with DefaultParams
     import spark.implicits._
 
     val ds = dataset.as[DeviceData]
-    val result = ds.filter(_.document.resource == getMessageType) // using typed APIs
+    val result = ds.filter(p => getMessageTypes.contains(p.document.resource)) // using typed APIs
 
     //TODO: Try not to convert explicitly to a DataFrame
     result.toDF()
