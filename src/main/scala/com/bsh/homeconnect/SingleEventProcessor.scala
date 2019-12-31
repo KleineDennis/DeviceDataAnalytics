@@ -1,6 +1,8 @@
 package com.bsh.homeconnect
 
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.functions.udf
+import org.apache.spark.sql.types.DataTypes
 
 /**
  * SingleEventProcessor, which handles validation, enrichment and routing.
@@ -29,19 +31,25 @@ object SingleEventProcessor extends App {
     .option("kafka.bootstrap.servers", "localhost:9092")
     .option("subscribe", "raw-events")
     .load()
-
-  val ds = df
     .selectExpr("CAST(key AS STRING)", "CAST(value AS STRING)")
     .as[(String, String)]
 
+  val myTransformer = new IpEnrichmentTransformer()
+    .setGeoFile(getClass.getResource("/GeoLite2-City.mmdb").getFile)
+    .setInputCol("value")
+    .setOutputCol("output")
 
+  val topicUDF = udf((input: String) => if(input.startsWith("Error")) "bad-events" else "enriched-events", DataTypes.StringType)
 
-  val query = ds.writeStream
+  val result = myTransformer.transform(df)
+    .withColumn("topic", topicUDF($"output"))
+
+  val query = result.selectExpr("topic", "output as value")
+    .writeStream
     .format("kafka")
     .option("kafka.bootstrap.servers", "localhost:9092")
-    .option("topic", "enriched-events")
+    .option("checkpointLocation", "src/main/resources/checkpoint")
     .start()
 
   query.awaitTermination()
-
 }
