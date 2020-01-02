@@ -66,7 +66,6 @@ object MaxMindGeoData extends App {
 
   val path = "/Users/denniskleine/Downloads/GeoLite2-City.mmdb"
   val maxmind = new DatabaseReader.Builder(new File(path)).build
-
   val mapper = new ObjectMapper with ScalaObjectMapper
   val root = mapper.readTree(message)
   val ipNode = root.path("shopper").path("ipAddress")

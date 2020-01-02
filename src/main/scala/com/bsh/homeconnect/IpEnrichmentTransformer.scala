@@ -59,6 +59,7 @@ class IpEnrichmentTransformer(override val uid: String)
                 val enriched = evt.copy(shopper = evt.shopper.copy(country = Some(loc.countryName), city = loc.city))
                 Json.stringify(Json.toJson(enriched))
               case Some(Left(e)) => "Error: " + e.toString
+              case None => "Error: No ip address found"
             }
           case e: JsError => "Error: " + e.toString //Json.stringify(JsError.toJson(e))
         }
