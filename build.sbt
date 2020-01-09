@@ -21,7 +21,3 @@ lazy val root = (project in file("."))
     libraryDependencies += "com.snowplowanalytics" %% "scala-maxmind-iplookups" % "0.6.1",
     libraryDependencies += "com.typesafe.play" %% "play-json" % playVersion,
   )
-
-
-//    libraryDependencies += "com.sanoma.cda" %% "maxmind-geoip2-scala" % "1.5.5",  //only Scala 2.11
-//    libraryDependencies += "org.apache.spark" %% "spark-streaming-kafka-0-10" % sparkVersion,
