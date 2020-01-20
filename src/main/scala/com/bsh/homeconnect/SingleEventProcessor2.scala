@@ -3,7 +3,7 @@ package com.bsh.homeconnect
 import cats.Id
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
-import com.fasterxml.jackson.module.scala.ScalaObjectMapper
+//import com.fasterxml.jackson.module.scala.ScalaObjectMapper
 import com.snowplowanalytics.maxmind.iplookups.CreateIpLookups
 import org.apache.spark.sql.functions.udf
 import org.apache.spark.sql.types.DataTypes
@@ -55,7 +55,7 @@ object SingleEventProcessor2 extends App {
     val geoUDF = udf((input: String) => {
       if (input.startsWith("Error") == false)  {
         val geoFile = getClass.getResource("/GeoLite2-City.mmdb").getFile
-        val mapper = new ObjectMapper with ScalaObjectMapper
+        val mapper = new ObjectMapper //with ScalaObjectMapper
         val root = mapper.readTree(input)
         val ip = root.path("shopper").path("ipAddress").textValue
         val idActual = CreateIpLookups[Id]

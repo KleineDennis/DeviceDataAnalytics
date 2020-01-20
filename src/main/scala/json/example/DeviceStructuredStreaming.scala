@@ -1,4 +1,4 @@
-package example
+package json.example
 
 import org.apache.spark.ml.{Pipeline, PipelineModel}
 import org.apache.spark.sql.SparkSession

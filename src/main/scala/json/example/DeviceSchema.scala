@@ -1,4 +1,4 @@
-package example
+package json.example
 
 import org.apache.spark.sql.types._
 import play.api.libs.functional.syntax._
@@ -12,7 +12,7 @@ case class Header(sID: Long, msgID: Long, resource: String, data: Seq[Event] = S
 case class DeviceData(vid: String, messageKey: String, roProfil: String, evtDateTime: String, document: Header)
 
 
-object DeviceJson{
+object DeviceJson {
 
   implicit val eventReads: Reads[Event] = (
       (JsPath \ "uid").read[String](minLength[String](2)) and

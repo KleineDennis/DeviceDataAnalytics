@@ -1,4 +1,4 @@
-package example
+package json.example
 
 import com.holdenkarau.spark.testing.{DataFrameSuiteBase, SharedSparkContext}
 import org.apache.spark.sql.functions._

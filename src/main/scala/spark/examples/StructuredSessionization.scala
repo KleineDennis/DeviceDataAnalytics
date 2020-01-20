@@ -70,13 +70,11 @@ object StructuredSessionization {
             val timestamps = events.map(_.timestamp.getTime).toSeq
             val updatedSession = if (state.exists) {
                                     val oldSession = state.get
-                                    SessionInfo(
-                                      oldSession.numEvents + timestamps.size,
-                                      oldSession.startTimestampMs,
-                                      math.max(oldSession.endTimestampMs, timestamps.max))
+                                    SessionInfo(oldSession.numEvents + timestamps.size, oldSession.startTimestampMs, math.max(oldSession.endTimestampMs, timestamps.max))
                                   } else {
                                     SessionInfo(timestamps.size, timestamps.min, timestamps.max)
                                   }
+
             state.update(updatedSession)
 
             // Set timeout such that the session will be expired if no data received for 10 seconds
@@ -84,6 +82,7 @@ object StructuredSessionization {
             SessionUpdate(sessionId, state.get.durationMs, state.get.numEvents, expired = false)
           }
       }
+
 
     // Start running the query that prints the session updates to the console
     val query = sessionUpdates

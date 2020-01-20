@@ -1,4 +1,4 @@
-package example
+package json.example
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json.Reads._
